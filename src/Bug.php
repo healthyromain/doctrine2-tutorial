@@ -1,5 +1,6 @@
 <?php
 // src/Bug.php
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,10 +23,13 @@ class Bug
     #[ORM\Column(type: 'string')]
     private string $status;
 
-    private User $engineer;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedBugs')]
+    private User|null $engineer = null;
 
-    private User $reporter;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reportedBugs')]
+    private User|null $reporter = null;
 
+    #[ORM\ManyToMany(targetEntity: Product::class)]
     private $products;
 
     public function __construct()
